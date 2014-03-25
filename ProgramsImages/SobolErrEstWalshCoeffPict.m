@@ -45,7 +45,6 @@ n=2^mmax;
 %xpts=qrand(sobol,n);
 xpts=sobstr(1:n,1:d);
 y=testfun(xpts);
-%keyboard
 yval=y;
 yfwt=fwht(y);
 
@@ -72,8 +71,6 @@ for l=mmax-1:-1:1
    kappanumap(1+flip)=temp;
    %keyboard
 end
-%[y y(kappanumap)];
-%keyboard
 ymap=y(kappanumap);
 
 
