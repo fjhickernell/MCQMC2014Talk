@@ -87,7 +87,7 @@ for mdual=mdualvec
    whbig=ndual:nplot-1;
    muse=mdual-mlag;
    nuse=2^muse;
-   whuse=nuse:2*nuse-1;
+   whuse=nuse/2:nuse-1;
    figure
    h=loglog(whsmall,yfwtabs(whsmall+1),'g.',...
       whbig,yfwtabs(whbig+1),'k.',...
