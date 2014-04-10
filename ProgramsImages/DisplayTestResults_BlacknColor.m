@@ -5,7 +5,7 @@ set(0,'defaultaxesfontsize',20,'defaulttextfontsize',20) %make font larger
 set(0,'defaultLineLineWidth',3) %thick lines
 set(0,'defaultTextInterpreter','tex') %tex axis labels
 set(0,'defaultLineMarkerSize',40) %larger markersset(0,'defaultaxesfontsize',20,'defaulttextfontsize',20)
-load TestCubature-geomean-normal-2014-04-03-21-26-N-1000-d-64-tol-0.002.mat
+load TestCubature-Genz-uniform-2014-04-05-14-51-N-1000-d-1-tol-0.001.mat
 plotTest.plotcolor='color';
 plotTest.logerrlo=-5;
 plotTest.logerrhi=0;

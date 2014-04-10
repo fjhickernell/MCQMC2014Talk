@@ -59,7 +59,6 @@ for irep=1:test.nrep
     if strcmp(fun.funtype,'gaussian')
         res.exactkurtosis(irep)=param.exactkurtosis;
         res.exactvariance(irep)=param.exactvariance;
-
     end
     
     % Evaluate integral for iid

@@ -22,7 +22,6 @@ mlag=4; %distance between coefficients summed and those computed
 fudge=3; %inflation factor
 sobstr=sobolset(d); %generate a Sobol' sequence
 sobstr=scramble(sobstr,'MatousekAffineOwen'); %scramble it
-%sobol=qrandstream(sobstr);
 Stilde=zeros(mmax-mmin+1,1); %initialize
 errest=zeros(mmax-mmin+1,1);
 appxinteg=zeros(mmax-mmin+1,1);
