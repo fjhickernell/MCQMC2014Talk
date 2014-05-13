@@ -1,25 +1,31 @@
-function [q,err,time,n]=cubSobol(f,d,tol)
-% [q,err,time]=CUBSOBOL(f,d,tol) estimates the integral of f over the
-% d-dimensional unit cube using Sobol' cubature
+function [q,err,time,n,overbudget]=cubSobol(f,d,tol,density)
+% [q,err,time,n,overbudget]=CUBSOBOL(f,d,tol) estimates the integral of f 
+% over the d-dimensional region using Sobol' cubature
 
 tic
 %% Initialize parameters
-if nargin < 3
-   tol=1e-4;
-   if nargin < 2
-      d=1;
+if nargin < 4
+   density='uniform';
+   if nargin < 3
+      tol=1e-4;
+      if nargin < 2
+         d=1;
+      end
    end
 end
-mmax=20; %maximum number of points is 2^mmax
+if strcmp(density,'normal')
+   f=@(x) f(norminv(x));
+end
+mmax=22; %maximum number of points is 2^mmax
 mmin=10; %initial number of points is 2^mmin
-mlag=4;
-fudge=3;
-sobstr=sobolset(d);
-sobstr=scramble(sobstr,'MatousekAffineOwen');
-%sobol=qrandstream(sobstr);
-Stilde=zeros(mmax-mmin+1,1);
+mlag=4; %distance between coefficients summed and those computed
+fudge=3; %inflation factor
+sobstr=sobolset(d); %generate a Sobol' sequence
+sobstr=scramble(sobstr,'MatousekAffineOwen'); %scramble it
+Stilde=zeros(mmax-mmin+1,1); %initialize
 errest=zeros(mmax-mmin+1,1);
 appxinteg=zeros(mmax-mmin+1,1);
+overbudget=true;
 
 %% Initial points and FWT
 n=2^mmin;
@@ -37,6 +43,7 @@ for l=0:mmin-1
    y(ptind)=(evenval+oddval)/2;
    y(~ptind)=(evenval-oddval)/2;
 end
+%y now contains the FWT coefficients
 
 %% Approximate integral
 q=mean(yval);
@@ -59,8 +66,7 @@ nllstart=2^(mmin-mlag-1);
 Stilde(1)=sum(abs(y(kappanumap(nllstart+1:2*nllstart))));
 err=fudge*2^(-mmin)*Stilde(1);
 errest(1)=err;
-if err <= tol; time=toc; return, end
-
+if err <= tol; overbudget=false; time=toc; return, end
 
 %% Loop over m
 for m=mmin+1:mmax 
@@ -115,8 +121,7 @@ for m=mmin+1:mmax
    %% Approximate integral
    q=mean(yval);
    appxinteg(meff)=q;
-   if err <= tol; time=toc; break, end
+   if err <= tol; overbudget=false; time=toc; return, end
 
 end
 time=toc;
-
